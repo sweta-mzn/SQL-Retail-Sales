@@ -27,6 +27,7 @@ This project demonstrates the implementation of a Library Management System usin
 
 ```sql
 CREATE DATABASE library_db;
+--Create table Branch
 
 DROP TABLE IF EXISTS branch;
 CREATE TABLE branch
@@ -37,8 +38,10 @@ CREATE TABLE branch
             contact_no VARCHAR(15)
 );
 
+alter table branch
+alter column contact_no type varchar(25);
 
--- Create table "Employee"
+-- Create table Employees
 DROP TABLE IF EXISTS employees;
 CREATE TABLE employees
 (
@@ -50,8 +53,7 @@ CREATE TABLE employees
             FOREIGN KEY (branch_id) REFERENCES  branch(branch_id)
 );
 
-
--- Create table "Members"
+-- Create table Members
 DROP TABLE IF EXISTS members;
 CREATE TABLE members
 (
@@ -61,9 +63,7 @@ CREATE TABLE members
             reg_date DATE
 );
 
-
-
--- Create table "Books"
+--Create table Books
 DROP TABLE IF EXISTS books;
 CREATE TABLE books
 (
@@ -77,8 +77,7 @@ CREATE TABLE books
 );
 
 
-
--- Create table "IssueStatus"
+--Create table Issued_status
 DROP TABLE IF EXISTS issued_status;
 CREATE TABLE issued_status
 (
@@ -93,9 +92,7 @@ CREATE TABLE issued_status
             FOREIGN KEY (issued_book_isbn) REFERENCES books(isbn) 
 );
 
-
-
--- Create table "ReturnStatus"
+--Create table return_status
 DROP TABLE IF EXISTS return_status;
 CREATE TABLE return_status
 (
@@ -106,6 +103,7 @@ CREATE TABLE return_status
             return_book_isbn VARCHAR(50),
             FOREIGN KEY (return_book_isbn) REFERENCES books(isbn)
 );
+
 
 ```
 
@@ -120,31 +118,34 @@ CREATE TABLE return_status
 -- "978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.')"
 
 ```sql
-INSERT INTO books(isbn, book_title, category, rental_price, status, author, publisher)
-VALUES('978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.');
+Insert into books
+(isbn, book_title, category, rental_price, status, author, publisher)
+values  ('978-1-60129-456-2','To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.');
 SELECT * FROM books;
 ```
 **Task 2: Update an Existing Member's Address**
 
 ```sql
-UPDATE members
-SET member_address = '125 Oak St'
-WHERE member_id = 'C103';
+select * from members;
+update members
+set member_address = '41 sibley road'
+where member_id = 'C101';
 ```
 
 **Task 3: Delete a Record from the Issued Status Table**
 -- Objective: Delete the record with issued_id = 'IS121' from the issued_status table.
 
 ```sql
-DELETE FROM issued_status
-WHERE   issued_id =   'IS121';
+select * from issued_status;
+Delete from issued_status
+where issued_id = 'IS121';
 ```
 
 **Task 4: Retrieve All Books Issued by a Specific Employee**
 -- Objective: Select all books issued by the employee with emp_id = 'E101'.
 ```sql
-SELECT * FROM issued_status
-WHERE issued_emp_id = 'E101'
+select * from issued_status
+where issued_emp_id = 'E101';
 ```
 
 
@@ -209,36 +210,28 @@ WHERE reg_date >= CURRENT_DATE - INTERVAL '180 days';
 10. **List Employees with Their Branch Manager's Name and their branch details**:
 
 ```sql
-SELECT 
-    e1.emp_id,
-    e1.emp_name,
-    e1.position,
-    e1.salary,
-    b.*,
-    e2.emp_name as manager
-FROM employees as e1
-JOIN 
-branch as b
-ON e1.branch_id = b.branch_id    
-JOIN
-employees as e2
-ON e2.emp_id = b.manager_id
+select e1.emp_id, e1.emp_name, e1.position, b.*, e2.emp_name as manager
+from employees e1
+Join branch b
+on b.branch_id = e1.branch_id
+join employees e2
+on e2.emp_id = b.manager_id
+;
 ```
 
 Task 11. **Create a Table of Books with Rental Price Above a Certain Threshold**:
 ```sql
-CREATE TABLE expensive_books AS
-SELECT * FROM books
-WHERE rental_price > 7.00;
+Create table Books101 as
+select * from books 
+where rental_price > 7;
 ```
 
 Task 12: **Retrieve the List of Books Not Yet Returned**
 ```sql
-SELECT * FROM issued_status as ist
-LEFT JOIN
-return_status as rs
-ON rs.issued_id = ist.issued_id
-WHERE rs.return_id IS NULL;
+select distinct issued_book_name from issued_status as ist
+left join return_status as rs
+on rs.issued_id = ist.issued_id
+where return_id is null;
 ```
 
 ## Advanced SQL Operations
@@ -510,13 +503,7 @@ This project demonstrates the application of SQL skills in creating and managing
 3. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` file to perform the analysis.
 4. **Explore and Modify**: Customize the queries as needed to explore different aspects of the data or answer additional questions.
 
-## Author - Zero Analyst
+## Author - Sweta Maharjan
 
-This project showcases SQL skills essential for database management and analysis. For more content on SQL and data analysis, connect with me through the following channels:
-
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community for learning and collaboration](https://discord.gg/36h5f2Z5PK)
-
+This project showcases SQL skills essential for database management and analysis.
 Thank you for your interest in this project!
